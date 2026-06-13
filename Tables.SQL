@@ -1,118 +1,130 @@
-CREATE DATABASE Tables;
+-- Creación de la base de datos
+CREATE DATABASE IF NOT EXISTS Tables;
 USE Tables;
 
 CREATE TABLE UnidadesMedida(
-    idUnidad INT AUTO_INCREMENT PRIMARY KEY,
-    NombreUnidad VARCHAR(50),
-    Abreviatura VARCHAR(10),
+    IdUnidad INT AUTO_INCREMENT PRIMARY KEY,
+    NombreUnidad VARCHAR(50) NOT NULL,
+    Abreviatura VARCHAR(10) NOT NULL,
     Descripcion TEXT,
     EsCompuesta BOOLEAN DEFAULT TRUE,
     UnidadBase VARCHAR(50),
     CantidadPorUnidad DECIMAL(10,2),
     Activo BOOLEAN DEFAULT TRUE,
-    FechaCreacion TIMESTAMP()
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Proveedores(
-    idProveedor INT AUTO_INCREMENT PRIMARY KEY,
-    NombreProveedor VARCHAR(200),
+    IdProveedor INT AUTO_INCREMENT PRIMARY KEY,
+    NombreProveedor VARCHAR(200) NOT NULL,
     NombreContacto VARCHAR(150),
     Telefono VARCHAR(30),
     Email VARCHAR(100),
     Direccion TEXT,
     Activo BOOLEAN DEFAULT TRUE,
-    FechaCreacion TIMESTAMP()
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Sucursales(
+    IdSucursal INT AUTO_INCREMENT PRIMARY KEY,
+    CodigoSucursal VARCHAR(20) NOT NULL,
+    NombreSucursal VARCHAR(100) NOT NULL,
+    Direccion TEXT,
+    Telefono VARCHAR(30),
+    Responsable VARCHAR(100),
+    Activo BOOLEAN DEFAULT TRUE,
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Productos(
-    idProducto INT AUTO_INCREMENT PRIMARY KEY,
-    CodigoProducto VARCHAR(50),
-    NombreProducto VARCHAR(200),
+    IdProducto INT AUTO_INCREMENT PRIMARY KEY,
+    CodigoProducto VARCHAR(50) NOT NULL,
+    NombreProducto VARCHAR(200) NOT NULL,
     Descripcion TEXT,
     Marca VARCHAR(100),
     Especificacion VARCHAR(20),
     TipoAceite VARCHAR(20),
-    idUnidad INT,
+    IdUnidad INT NOT NULL,
     Activo BOOLEAN DEFAULT TRUE,
-    FechaCreacion TIMESTAMP(),
-    FechaActualizacion TIMESTAMP(),
-    FOREIGN KEY (idUnidad) REFERENCES Unidad(idUnidad)
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FechaActualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (IdUnidad) REFERENCES UnidadesMedida(IdUnidad)
 );
 
 CREATE TABLE ProductoProveedores(
-    idProductoProveedor INT AUTO_INCREMENT PRIMARY KEY,
-    idProducto INT,
-    idProveedor INT,
+    IdProductoProveedor INT AUTO_INCREMENT PRIMARY KEY,
+    IdProducto INT NOT NULL,
+    IdProveedor INT NOT NULL,
     CodigoProveedor VARCHAR(100),
     PrecioReferencia DECIMAL(10,2),
     Activo BOOLEAN DEFAULT TRUE,
-    FechaCreacion TIMESTAMP()
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto),
+    FOREIGN KEY (IdProveedor) REFERENCES Proveedores(IdProveedor)
 );
 
-CREATE TABLE Sucursales(
-    idSucursal INT AUTO_INCREMENT PRIMARY KEY,
-    CodigoSucursal VARCHAR(20),
-    NombreSucursal VARCHAR(100),
-    Direccion TEXT,
-    Telefono VARCHAR(30),
-    Responsable VARCHAR(100),
-    Activo BOOLEAN DEFAULT,
-    FechaCreacion TIMESTAMP()
+CREATE TABLE ComposicionProductos(
+    IdComposicion INT AUTO_INCREMENT PRIMARY KEY,
+    IdProductoPadre INT NOT NULL,
+    IdProductoHijo INT NOT NULL,
+    CantidadPorCaja DECIMAL(10,2) NOT NULL,
+    Activo BOOLEAN DEFAULT TRUE,
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (IdProductoPadre) REFERENCES Productos(IdProducto),
+    FOREIGN KEY (IdProductoHijo) REFERENCES Productos(IdProducto)
 );
 
 CREATE TABLE InventarioSucursales(
-    idSucursal INT AUTO_INCREMENT PRIMARY KEY,
-    idProducto INT,
+    IdInventarioSucursal INT AUTO_INCREMENT PRIMARY KEY,
+    IdSucursal INT NOT NULL,
+    IdProducto INT NOT NULL,
     StockMinimo DECIMAL(10,2),
     StockActual DECIMAL(10,2),
-    FechaActualizacion TIMESTAMP(),
-    Activo BOOLEAN DEFAULT TRUE
+    FechaActualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    Activo BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (IdSucursal) REFERENCES Sucursales(IdSucursal),
+    FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto)
 );
 
 CREATE TABLE FacturasCompra(
-    idFacturaCompra INT AUTO_INCREMENT PRIMARY KEY,
-    NumeroFactura VARCHAR(50),
-    idProveedor INT,
-    idSucursal INT,
-    FechaFactura DATE,
-    FechaRegistro TIMESTAMP(),
+    IdFacturaCompra INT AUTO_INCREMENT PRIMARY KEY,
+    NumeroFactura VARCHAR(50) NOT NULL,
+    IdProveedor INT NOT NULL,
+    IdSucursal INT NOT NULL,
+    FechaFactura DATE NOT NULL,
+    FechaRegistro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Subtotal DECIMAL(12,2),
     Impuesto DECIMAL(12,2),
-    Total DECIMAL(12,2)
+    Total DECIMAL(12,2),
     Observaciones TEXT,
-    Activo BOOLEAN DEFAULT TRUE
+    Activo BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (IdProveedor) REFERENCES Proveedores(IdProveedor),
+    FOREIGN KEY (IdSucursal) REFERENCES Sucursales(IdSucursal)
 );
 
 CREATE TABLE FacturasCompraDetalle(
-    idDetalleFactura INT AUTO_INCREMENT PRIMARY KEY,
-    idFacturaCompra INT,
-    idProducto INT,
-    Cantidad DECIMAL(10,2),
-    PrecioUnitario DECIMAL(10,2),
+    IdDetalleFactura INT AUTO_INCREMENT PRIMARY KEY,
+    IdFacturaCompra INT NOT NULL,
+    IdProducto INT NOT NULL,
+    Cantidad DECIMAL(10,2) NOT NULL,
+    PrecioUnitario DECIMAL(10,2) NOT NULL,
     TotalLinea DECIMAL(12,2),
-    Observaciones VARCHAR(255)
+    Observaciones VARCHAR(255),
+    FOREIGN KEY (IdFacturaCompra) REFERENCES FacturasCompra(IdFacturaCompra),
+    FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto)
 );
 
 CREATE TABLE HistorialPreciosCompra(
-    idPrecio INT AUTO_INCREMENT PRIMARY KEY,
-    idProducto INT,
-    Cantidad DECIMAL(10,2),
-    PrecioCompra DECIMAL(10,2),
+    IdPrecio INT AUTO_INCREMENT PRIMARY KEY,
+    IdProducto INT NOT NULL,
+    Cantidad DECIMAL(10,2) NOT NULL,
+    PrecioCompra DECIMAL(10,2) NOT NULL,
     TotalCompra DECIMAL(10,2),
-    FechaPrecio TIMESTAMP(),
+    FechaPrecio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Proveedor VARCHAR(200),
     NumeroFactura VARCHAR(50),
     Observaciones TEXT,
     Activo BOOLEAN DEFAULT TRUE,
-    UsuarioRegistro VARCHAR(100)
-    FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
-);
-
-CREATE TABLE ComposicionProductos(
-    idComposicion INT AUTO_INCREMENT PRIMARY KEY,
-    idProductoPadre INT,
-    idProductoHijo INT,
-    CantidadPorCaja DECIMAL(10,2),
-    Activo BOOLEAN DEFAULT TRUE,
-    FechaCreacion TIMESTAMP()
+    UsuarioRegistro VARCHAR(100),
+    FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto)
 );
