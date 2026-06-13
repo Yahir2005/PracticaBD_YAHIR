@@ -14,6 +14,13 @@ CREATE TABLE UnidadesMedida(
     FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+INSERT INTO UnidadesMedida 
+(NombreUnidad, Abreviatura, Descripcion, UnidadBase, CantidadPorUnidad) 
+VALUES
+("Kilogramo","Kg","Unidad de masa equivalente a 1000 gramos",1,1),
+("Gramo","g","Unidad de masa equivalente a 0.0001 de kilogramo",1,"Kilogramo",1000),
+("Miligramo","mg","Unidad de masa equivalente a 0.0001 de gramo",1,"Gramo",1000);
+
 CREATE TABLE Proveedores(
     IdProveedor INT AUTO_INCREMENT PRIMARY KEY,
     NombreProveedor VARCHAR(200) NOT NULL,
@@ -24,6 +31,7 @@ CREATE TABLE Proveedores(
     Activo BOOLEAN DEFAULT TRUE,
     FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 CREATE TABLE Sucursales(
     IdSucursal INT AUTO_INCREMENT PRIMARY KEY,
