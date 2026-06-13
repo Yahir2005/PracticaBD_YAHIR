@@ -31,7 +31,16 @@ CREATE TABLE Proveedores(
     Activo BOOLEAN DEFAULT TRUE,
     FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+INSERT INTO Proveedores(
+    NombreProveedor,
+    NombreContacto,
+    Telefono,
+    Email,
+    Direccion
+) VALUES
+("Productos Vetales S.A  C.V","Daniel","232324432","Daniel@gmail.com","reforma s/n"),
+("Telegramas S.A de C.V","Pedro","232243432","Pedro@gmail.com","Rafael Ayala s/n"),
+("La Oriental C.V","Benito","2323434432","Benito@gmail.com","Los Heroes s/n");
 
 CREATE TABLE Sucursales(
     IdSucursal INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,6 +52,17 @@ CREATE TABLE Sucursales(
     Activo BOOLEAN DEFAULT TRUE,
     FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO Sucursales(
+    CodigoSucursal,
+    NombreSucursal,
+    Direccion,
+    Telefono,
+    Responsable
+) VALUES
+("12345","Sucursal 1","reforma s/n","2371893456","Daniel"),
+("23456","Sucursal 2","Rafael Ayala s/n","2391032453","Pedro"),
+("34567","Sucursal 3","Los Heroes s/n","2340981234","Benito");
 
 CREATE TABLE Productos(
     IdProducto INT AUTO_INCREMENT PRIMARY KEY,
