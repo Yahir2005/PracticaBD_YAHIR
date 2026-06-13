@@ -79,6 +79,19 @@ CREATE TABLE Productos(
     FOREIGN KEY (IdUnidad) REFERENCES UnidadesMedida(IdUnidad)
 );
 
+INSERT INTO Productos(
+    CodigoProducto,
+    NombreProducto,
+    Descripcion,
+    Marca,
+    Especificacion,
+    TipoAceite,
+    idUnidad
+) VALUES
+("423324","Producto 1","Descripción 1","Marca 1","Especificación 1","Aceite 1",1),
+("423423","Producto 2","Descripción 2","Marca 2","Especificación 2","Aceite 2",2),
+("543434","Producto 3","Descripción 3","Marca 3","Especificación 3","Aceite 3",3);
+
 CREATE TABLE ProductoProveedores(
     IdProductoProveedor INT AUTO_INCREMENT PRIMARY KEY,
     IdProducto INT NOT NULL,
