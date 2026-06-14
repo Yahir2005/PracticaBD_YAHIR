@@ -104,6 +104,14 @@ CREATE TABLE ProductoProveedores(
     FOREIGN KEY (IdProveedor) REFERENCES Proveedores(IdProveedor)
 );
 
+INSERT INTO ProductoProveedores(
+    idProducto,
+    idProveedor,
+    CodigoProveedor,
+    PrecioReferencia
+) VALUES
+(1,1,"2342",234.0),(2,2,"4323",40.0),(3,3,"3243",234.0);
+
 CREATE TABLE ComposicionProductos(
     IdComposicion INT AUTO_INCREMENT PRIMARY KEY,
     IdProductoPadre INT NOT NULL,
