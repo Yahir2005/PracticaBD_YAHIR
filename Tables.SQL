@@ -32,6 +32,7 @@ CREATE TABLE Proveedores(
     Activo BOOLEAN DEFAULT TRUE,
     FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 INSERT INTO Proveedores(
     NombreProveedor,
     NombreContacto,
@@ -42,6 +43,7 @@ INSERT INTO Proveedores(
 ("Productos Vetales S.A  C.V","Daniel","232324432","Daniel@gmail.com","reforma s/n"),
 ("Telegramas S.A de C.V","Pedro","232243432","Pedro@gmail.com","Rafael Ayala s/n"),
 ("La Oriental C.V","Benito","2323434432","Benito@gmail.com","Los Heroes s/n");
+
 
 CREATE TABLE Sucursales(
     IdSucursal INT AUTO_INCREMENT PRIMARY KEY,
@@ -65,6 +67,7 @@ INSERT INTO Sucursales(
 ("23456","Sucursal 2","Rafael Ayala s/n","2391032453","Pedro"),
 ("34567","Sucursal 3","Los Heroes s/n","2340981234","Benito");
 
+
 CREATE TABLE Productos(
     IdProducto INT AUTO_INCREMENT PRIMARY KEY,
     CodigoProducto VARCHAR(50) NOT NULL,
@@ -87,11 +90,12 @@ INSERT INTO Productos(
     Marca,
     Especificacion,
     TipoAceite,
-    idUnidad
+    IdUnidad
 ) VALUES
 ("423324","Producto 1","Descripción 1","Marca 1","Especificación 1","Aceite 1",1),
 ("423423","Producto 2","Descripción 2","Marca 2","Especificación 2","Aceite 2",2),
 ("543434","Producto 3","Descripción 3","Marca 3","Especificación 3","Aceite 3",3);
+
 
 CREATE TABLE ProductoProveedores(
     IdProductoProveedor INT AUTO_INCREMENT PRIMARY KEY,
@@ -106,12 +110,15 @@ CREATE TABLE ProductoProveedores(
 );
 
 INSERT INTO ProductoProveedores(
-    idProducto,
-    idProveedor,
+    IdProducto,
+    IdProveedor,
     CodigoProveedor,
     PrecioReferencia
 ) VALUES
-(1,1,"2342",234.0),(2,2,"4323",40.0),(3,3,"3243",234.0);
+(1,1,"2342",234.0),
+(2,2,"4323",40.0),
+(3,3,"3243",234.0);
+
 
 CREATE TABLE ComposicionProductos(
     IdComposicion INT AUTO_INCREMENT PRIMARY KEY,
@@ -129,7 +136,10 @@ INSERT INTO ComposicionProductos(
     IdProductoHijo,
     CantidadPorCaja
 ) VALUES
-(1,2,30.0),(2,3,40.0),(1,3,30.0);
+(1,2,30.0),
+(2,3,40.0),
+(1,3,30.0);
+
 
 CREATE TABLE InventarioSucursales(
     IdInventarioSucursal INT AUTO_INCREMENT PRIMARY KEY,
@@ -145,11 +155,13 @@ CREATE TABLE InventarioSucursales(
 
 INSERT INTO InventarioSucursales(
     IdSucursal,
-    idProducto,
+    IdProducto,
     StockMinimo,
     StockActual
 ) VALUES
-(1,1,20.0,30.0),(2,2,30.0,40.0),(3,3,40.0,50.0);
+(1,1,20.0,30.0),
+(2,2,30.0,40.0),
+(3,3,40.0,50.0);
 
 
 CREATE TABLE FacturasCompra(
@@ -182,6 +194,7 @@ INSERT INTO FacturasCompra(
 ("432344",2,2,"2026-06-21",25.0,5.0,30.0,"Observación 2"),
 ("234323",3,3,"2027-06-22",30.0,5.0,35.0,"Observación 3");
 
+
 CREATE TABLE FacturasCompraDetalle(
     IdDetalleFactura INT AUTO_INCREMENT PRIMARY KEY,
     IdFacturaCompra INT NOT NULL,
@@ -206,8 +219,9 @@ INSERT INTO FacturasCompraDetalle(
 (2,2,30.0,35.0,1050.0,"Observación 2"),
 (3,3,40.0,45.0,1800.0,"Observación 3");
 
+
 CREATE TABLE HistorialPreciosCompra(
-    IdPrecio INT,
+    IdPrecio INT AUTO_INCREMENT PRIMARY KEY,
     IdProducto INT NOT NULL,
     Cantidad DECIMAL(10,2) NOT NULL,
     PrecioCompra DECIMAL(10,2) NOT NULL,
@@ -218,8 +232,7 @@ CREATE TABLE HistorialPreciosCompra(
     Observaciones TEXT,
     Activo BOOLEAN DEFAULT TRUE,
     UsuarioRegistro VARCHAR(100),
-    FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto),
-    FOREIGN KEY (IdPrecio) REFERENCES Precio(IdPrecio)
+    FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto)
 );
 
 INSERT INTO HistorialPreciosCompra(
