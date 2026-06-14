@@ -142,6 +142,15 @@ CREATE TABLE InventarioSucursales(
     FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto)
 );
 
+INSERT INTO InventarioSucursales(
+    IdSucursal,
+    idProducto,
+    StockMinimo,
+    StockActual
+) VALUES
+(1,1,20.0,30.0),(2,2,30.0,40.0),(3,3,40.0,50.0);
+
+
 CREATE TABLE FacturasCompra(
     IdFacturaCompra INT AUTO_INCREMENT PRIMARY KEY,
     NumeroFactura VARCHAR(50) NOT NULL,
