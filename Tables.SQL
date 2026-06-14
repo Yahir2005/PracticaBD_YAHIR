@@ -167,6 +167,20 @@ CREATE TABLE FacturasCompra(
     FOREIGN KEY (IdSucursal) REFERENCES Sucursales(IdSucursal)
 );
 
+INSERT INTO FacturasCompra(
+    NumeroFactura,
+    idProveedor,
+    IdSucursal,
+    FechaFactura,
+    Subtotal,
+    Impuesto,
+    Total,
+    Observaciones
+) VALUES
+("324324",1,1,"20-06-2025",23.0,3.0,27.0,"Observación 1"),
+("432344",2,2,"21-06-2026",25.0,5.0,30.0,"Observación 2"),
+("234323",3,3,"22-06-2027",30.0,5.0,35.0,"Observación 3");
+
 CREATE TABLE FacturasCompraDetalle(
     IdDetalleFactura INT AUTO_INCREMENT PRIMARY KEY,
     IdFacturaCompra INT NOT NULL,
