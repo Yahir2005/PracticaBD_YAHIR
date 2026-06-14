@@ -123,6 +123,13 @@ CREATE TABLE ComposicionProductos(
     FOREIGN KEY (IdProductoHijo) REFERENCES Productos(IdProducto)
 );
 
+INSERT INTO ComposicionProductos(
+    IdProductoPadre,
+    IdProductoHijo,
+    CantidadPorCaja
+) VALUES
+(1,2,30.0),(2,3,40.0),(1,3,30.0);
+
 CREATE TABLE InventarioSucursales(
     IdInventarioSucursal INT AUTO_INCREMENT PRIMARY KEY,
     IdSucursal INT NOT NULL,
