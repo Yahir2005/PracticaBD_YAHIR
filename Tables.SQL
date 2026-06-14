@@ -15,11 +15,12 @@ CREATE TABLE UnidadesMedida(
 );
 
 INSERT INTO UnidadesMedida 
-(NombreUnidad, Abreviatura, Descripcion, UnidadBase, CantidadPorUnidad) 
+(NombreUnidad, Abreviatura, Descripcion, EsCompuesta, UnidadBase, CantidadPorUnidad) 
 VALUES
-("Kilogramo","Kg","Unidad de masa equivalente a 1000 gramos",1,1),
-("Gramo","g","Unidad de masa equivalente a 0.0001 de kilogramo",1,"Kilogramo",1000),
-("Miligramo","mg","Unidad de masa equivalente a 0.0001 de gramo",1,"Gramo",1000);
+("Kilogramo","Kg","Unidad de masa equivalente a 1000 gramos",0,NULL,NULL),
+("Gramo","g","Unidad de masa equivalente a 1/1000 de kilogramo",1,"Kilogramo",1000),
+("Miligramo","mg","Unidad de masa equivalente a 1/1000 de gramo",1,"Gramo",1000);
+
 
 CREATE TABLE Proveedores(
     IdProveedor INT AUTO_INCREMENT PRIMARY KEY,
@@ -169,7 +170,7 @@ CREATE TABLE FacturasCompra(
 
 INSERT INTO FacturasCompra(
     NumeroFactura,
-    idProveedor,
+    IdProveedor,
     IdSucursal,
     FechaFactura,
     Subtotal,
@@ -177,9 +178,9 @@ INSERT INTO FacturasCompra(
     Total,
     Observaciones
 ) VALUES
-("324324",1,1,"20-06-2025",23.0,3.0,27.0,"Observación 1"),
-("432344",2,2,"21-06-2026",25.0,5.0,30.0,"Observación 2"),
-("234323",3,3,"22-06-2027",30.0,5.0,35.0,"Observación 3");
+("324324",1,1,"2025-06-20",23.0,3.0,26.0,"Observación 1"),
+("432344",2,2,"2026-06-21",25.0,5.0,30.0,"Observación 2"),
+("234323",3,3,"2027-06-22",30.0,5.0,35.0,"Observación 3");
 
 CREATE TABLE FacturasCompraDetalle(
     IdDetalleFactura INT AUTO_INCREMENT PRIMARY KEY,
@@ -195,16 +196,18 @@ CREATE TABLE FacturasCompraDetalle(
 
 INSERT INTO FacturasCompraDetalle(
     IdFacturaCompra,
-    idProducto,
+    IdProducto,
     Cantidad,
     PrecioUnitario,
     TotalLinea,
     Observaciones
 ) VALUES
-(1,1,20.0,21.0,22.0,"Observación 1"),(2,2,30.0,35.0,20.0,"Observación 2"),(3,3,40.0,45.0,30,"Observacion 3");
+(1,1,20.0,21.0,420.0,"Observación 1"),
+(2,2,30.0,35.0,1050.0,"Observación 2"),
+(3,3,40.0,45.0,1800.0,"Observación 3");
 
 CREATE TABLE HistorialPreciosCompra(
-    IdPrecio INT AUTO_INCREMENT PRIMARY KEY,
+    IdPrecio INT,
     IdProducto INT NOT NULL,
     Cantidad DECIMAL(10,2) NOT NULL,
     PrecioCompra DECIMAL(10,2) NOT NULL,
@@ -215,5 +218,19 @@ CREATE TABLE HistorialPreciosCompra(
     Observaciones TEXT,
     Activo BOOLEAN DEFAULT TRUE,
     UsuarioRegistro VARCHAR(100),
-    FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto)
+    FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto),
+    FOREIGN KEY (IdPrecio) REFERENCES Precio(IdPrecio)
 );
+
+INSERT INTO HistorialPreciosCompra(
+    IdProducto,
+    Cantidad,
+    PrecioCompra,
+    TotalCompra,
+    Proveedor,
+    NumeroFactura,
+    Observaciones
+) VALUES
+(1,20.0,30.0,600.0,"Proveedor 1","43432","Observaciones 1"),
+(2,30.0,40.0,1200.0,"Proveedor 2","34323","Observaciones 2"),
+(3,40.0,50.0,2000.0,"Proveedor 3","43323","Observaciones 3");
