@@ -193,6 +193,16 @@ CREATE TABLE FacturasCompraDetalle(
     FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto)
 );
 
+INSERT INTO FacturasCompraDetalle(
+    IdFacturaCompra,
+    idProducto,
+    Cantidad,
+    PrecioUnitario,
+    TotalLinea,
+    Observaciones
+) VALUES
+(1,1,20.0,21.0,22.0,"Observación 1"),(2,2,30.0,35.0,20.0,"Observación 2"),(3,3,40.0,45.0,30,"Observacion 3");
+
 CREATE TABLE HistorialPreciosCompra(
     IdPrecio INT AUTO_INCREMENT PRIMARY KEY,
     IdProducto INT NOT NULL,
