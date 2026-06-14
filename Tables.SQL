@@ -247,3 +247,25 @@ INSERT INTO HistorialPreciosCompra(
 (1,20.0,30.0,600.0,"Proveedor 1","43432","Observaciones 1"),
 (2,30.0,40.0,1200.0,"Proveedor 2","34323","Observaciones 2"),
 (3,40.0,50.0,2000.0,"Proveedor 3","43323","Observaciones 3");
+
+/*JOINS*/
+
+/*JOIN de 2 tablas: Productos + UnidadesMedida para listar producto, codigo, unidad y abreviatura.*/
+
+
+/*JOIN de 2 tablas: HistorialPreciosCompra + Productos para mostrar compras por producto y fecha*/
+
+
+/*JOIN de 2 tablas: InventarioSucursales + Sucursales para visualizar stock por sucursal.*/
+
+
+/*JOIN de 3 tablas: HistorialPreciosCompra + Productos + UnidadesMedida para vista de compras completa.*/
+
+
+/*JOIN de 3 tablas: InventarioSucursales + Productos + Sucursales para reporte de inventario general.*/
+
+
+/*JOIN de 3 tablas: ProductoProveedores + Productos + Proveedores para catalogo de proveedores por producto.*/
+
+
+/*JOIN de 3 tablas: FacturasCompraDetalle + FacturasCompra + Productos para detalle de factura con datos del producto.*/
